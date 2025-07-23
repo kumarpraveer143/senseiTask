@@ -2,9 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
+interface LeaderboardEntry {
+  name?: string;
+  email: string;
+  maxScore: number;
+}
+
 export default function LeaderboardPage() {
   const { data: session } = useSession();
-  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [user, setUser] = useState<{ rank: number; maxScore: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +24,7 @@ export default function LeaderboardPage() {
         setUser(data.user || null);
         setLoading(false);
       })
-      .catch((e) => {
+      .catch(() => {
         setError("Failed to load leaderboard");
         setLoading(false);
       });

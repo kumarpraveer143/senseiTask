@@ -47,8 +47,12 @@ export default function QuizGamePage() {
         body: JSON.stringify({ score: sc }),
       });
       if (!res.ok) throw new Error("Failed to submit score");
-    } catch (e: any) {
-      setError(e.message || "Error submitting score");
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message || "Error submitting score");
+      } else {
+        setError("Error submitting score");
+      }
     } finally {
       setLoading(false);
     }
